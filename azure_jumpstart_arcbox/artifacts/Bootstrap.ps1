@@ -221,6 +221,9 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/common.tests.ps1") -OutFi
 Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/Invoke-Test.ps1") -OutFile $Env:ArcBoxTestsDir\Invoke-Test.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/WinGet.ps1") -OutFile $Env:ArcBoxDir\WinGet.ps1
 
+#For workshopplus we need the sql extension installation at scale script
+Invoke-WebRequest ($templateBaseUrl + "artifacts/InstallArcSQLExtensionAtScale.ps1") -OutFile $Env:ArcBoxDir\InstallArcSQLExtensionAtScale.ps1
+
 # Workbook template
 if ($flavor -eq "ITPro") {
     Write-Host "Fetching Workbook Template Artifact for ITPro"

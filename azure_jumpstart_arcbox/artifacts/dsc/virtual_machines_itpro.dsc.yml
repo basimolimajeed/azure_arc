@@ -11,10 +11,10 @@ properties:
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Win2K19.vhdx
         ProcessorCount: 2
-        StartupMemory: '4GB'
+        StartupMemory: '8GB'
         RestartIfNeeded: true
         State: Running
-        Generation: 2
+        Generation: 1
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: true
@@ -27,7 +27,23 @@ properties:
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Win2K22.vhdx
         ProcessorCount: 2
-        StartupMemory: '4GB'
+        StartupMemory: '10GB'
+        RestartIfNeeded: true
+        State: Running
+        Generation: 2
+        Path: F:\Virtual Machines
+        EnableGuestService: true
+        SecureBoot: true
+    - resource: HyperVDsc/VMHyperV
+      id: namingPrefixStage-SQL
+      directives:
+        description: Configure VM namingPrefixStage-SQL
+      settings:
+        Name: namingPrefixStage-SQL
+        SwitchName: 'InternalNATSwitch'
+        VhdPath: F:\Virtual Machines\ArcBox-SQL-STD.vhdx
+        ProcessorCount: 2
+        StartupMemory: '10GB'
         RestartIfNeeded: true
         State: Running
         Generation: 2
@@ -42,7 +58,7 @@ properties:
         Name: namingPrefixStage-Ubuntu-01
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-01.vhdx
-        ProcessorCount: 2
+        ProcessorCount: 1
         StartupMemory: '4GB'
         RestartIfNeeded: true
         State: Running
@@ -58,8 +74,8 @@ properties:
         Name: namingPrefixStage-Ubuntu-02
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-02.vhdx
-        ProcessorCount: 2
-        StartupMemory: '4GB'
+        ProcessorCount: 1
+        StartupMemory: '2GB'
         RestartIfNeeded: true
         State: Running
         Generation: 2

@@ -187,7 +187,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
   properties: {
     hardwareProfile: {
-      vmSize: flavor == 'DevOps' ? 'Standard_B4ms' : flavor == 'DataOps' ? 'Standard_D4s_v5' : 'Standard_D8s_v5'
+      // Workshop Plus needs Standard_E8s_V5
+      //      vmSize: flavor == 'DevOps' ? 'Standard_B4ms' : flavor == 'DataOps' ? 'Standard_D4s_v5' : 'Standard_D8s_v5'
+        vmSize: flavor == 'DevOps' ? 'Standard_B4ms' : flavor == 'DataOps' ? 'Standard_D4s_v5' : 'Standard_E8s_v5'
     }
     storageProfile: {
       osDisk: {
@@ -197,7 +199,8 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 1024
+        //diskSizeGB: 1024
+        diskSizeGB: 256  //for wsplus use 256
       }
       imageReference: {
         publisher: 'MicrosoftWindowsServer'
