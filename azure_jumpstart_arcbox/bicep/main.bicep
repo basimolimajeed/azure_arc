@@ -37,13 +37,15 @@ param flavor string = 'ITPro'
   'Standard'
   'Enterprise'
 ])
-param sqlServerEdition string = 'Developer'
+//WorkshopPlus we use SQL Standard
+//param sqlServerEdition string = 'Developer'
+param sqlServerEdition string = 'Standard'
 
 @description('Target GitHub account')
-param githubAccount string = 'microsoft'
+param githubAccount string = 'basimolimajeed'
 
 @description('Target GitHub branch')
-param githubBranch string = 'main'
+param githubBranch string = 'WorkshopPlus-1'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -57,7 +59,7 @@ param deployBastion bool = false
 param bastionSku string = 'Basic'
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'microsoft'
+param githubUser string = 'basimolimajeed'
 
 @description('Active directory domain services domain name')
 param addsDomainName string = 'jumpstart.local'
