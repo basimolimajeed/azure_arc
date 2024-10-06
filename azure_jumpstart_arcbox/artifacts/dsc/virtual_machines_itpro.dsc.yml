@@ -10,11 +10,11 @@ properties:
         Name: namingPrefixStage-Win2K19
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Win2K19.vhdx
-        ProcessorCount: 2
+        ProcessorCount: 1
         StartupMemory: '8GB'
         RestartIfNeeded: true
         State: Running
-        Generation: 1
+        Generation: 2
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: true
