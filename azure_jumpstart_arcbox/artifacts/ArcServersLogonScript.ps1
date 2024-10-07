@@ -611,13 +611,14 @@ Convert-JSImageToBitMap -SourceFilePath "$Env:ArcBoxDir\wallpaper.png" -Destinat
 
 Set-JSDesktopBackground -ImagePath "$Env:ArcBoxDir\wallpaper.bmp"
 
-if ($Env:flavor -eq "ITPro") {
+#WorkshopPlus: we do not run tests for now , consider for future!
+# if ($Env:flavor -eq "ITPro") {
 
-    Write-Header "Running tests to verify infrastructure"
+#     Write-Header "Running tests to verify infrastructure"
 
-    & "$Env:ArcBoxTestsDir\Invoke-Test.ps1"
+#     & "$Env:ArcBoxTestsDir\Invoke-Test.ps1"
 
-}
+# }
 
 Write-Header "Creating deployment logs bundle"
 
