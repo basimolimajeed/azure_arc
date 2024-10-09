@@ -551,3 +551,4 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.5.1' = {
 
 output vnetId string = arcVirtualNetwork.id
 output subnetId string = arcVirtualNetwork.properties.subnets[0].id
+output workspaceId string = workspace.id

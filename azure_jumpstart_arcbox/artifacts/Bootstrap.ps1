@@ -37,8 +37,10 @@ param (
     [object]$resourceTags,
     [string]$namingPrefix,
     [string]$debugEnabled,
-    [string]$sqlServerEdition
-)
+    [string]$sqlServerEdition,
+    [string]$changeTrackingDCR,
+    [string]$vmInsightsDCR
+    )
 
 [System.Environment]::SetEnvironmentVariable('adminUsername', $adminUsername, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('spnAuthority', $spnAuthority, [System.EnvironmentVariableTarget]::Machine)
@@ -72,6 +74,8 @@ param (
 [System.Environment]::SetEnvironmentVariable('namingPrefix', $namingPrefix, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('ArcBoxDir', "C:\ArcBox", [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('sqlServerEdition', $sqlServerEdition, [System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable('changeTrackingDCR', $changeTrackingDCR, [System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable('vmInsightsDCR', $vmInsightsDCR, [System.EnvironmentVariableTarget]::Machine)
 
 if ($debugEnabled -eq "true") {
     [System.Environment]::SetEnvironmentVariable('ErrorActionPreference', "Break", [System.EnvironmentVariableTarget]::Machine)

@@ -198,6 +198,9 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     autoShutdownTimezone: autoShutdownTimezone
     autoShutdownEmailRecipient: empty(autoShutdownEmailRecipient) ? null : autoShutdownEmailRecipient
     sqlServerEdition: sqlServerEdition
+    //For WorkshopPlus 
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
   }
   dependsOn: [
     updateVNetDNSServers
@@ -276,6 +279,15 @@ module aksDeployment 'kubernetes/aks.bicep' = if (flavor == 'DataOps') {
     stagingStorageAccountDeployment
     mgmtArtifactsAndPolicyDeployment
   ]
+}
+
+module dataCollectionRules 'mgmt/mgmtDataCollectionRules.bicep' = {
+  name: 'dataCollectionRules'
+  params: {
+    workspaceLocation: location
+    workspaceName: logAnalyticsWorkspaceName
+    workspaceResourceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
+  }
 }
 
 output clientVmLogonUserName string = flavor == 'DataOps' ? '${windowsAdminUsername}@${addsDomainName}' : ''
