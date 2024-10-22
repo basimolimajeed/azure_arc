@@ -6,7 +6,7 @@
       "value": "Standard_D8s_v3"
     },
     "vmName": {
-      "value": "ESA-Win-Demo"
+      "value": "ACSA-Win-Demo"
     },
     "kubernetesDistribution": {
       "value": "k3s"
@@ -21,19 +21,19 @@
       "value": "ArcPassword123!!"
     },
     "appId": {
-      "value": "XXXXX-XXXXX-XXXXX"
+      "value": "XXXXXXXXX"
     },
     "password": {
-      "value": "XXXXX-XXXXX-XXXXX"
+      "value": "XXXXXXXXXX"
     },
     "tenantId": {
-      "value": "XXXXX-XXXXX-XXXXX"
+      "value": "XXXXXXXXX"
     },
     "subscriptionId": {
-      "value": "XXXXX-XXXXX-XXXXX"
+      "value": "XXXXXXXXXX"
     },
     "location": {
-      "value": "eastus2"
+      "value": "XXXXXXXX"
     },
     "deployBastion": {
       "value": true
@@ -42,10 +42,10 @@
       "value": "Arc-Win-Demo-Bastion"
     },
     "storageAccountName": {
-      "value": "XXXXXX"
+      "value": "XXXXXXX"
     },
     "storageContainer": {
-      "value": "esademo-container"
+      "value": "fault-detection"
     }
   }
 }
