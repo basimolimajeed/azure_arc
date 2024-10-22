@@ -1,12 +1,6 @@
 @description('Location of your Azure resources')
 param azureLocation string
 
-@description('Name of your log analytics workspace')
-param logAnalyticsWorkspaceId string
-
-@description('The flavor of ArcBox you want to deploy. Valid values are: \'Full\', \'ITPro\', \'DevOps\'')
-param flavor string
-
 @description('Tags to assign for all ArcBox resources')
 param resourceTags object = {
   Solution: 'jumpstart_arcbox'
@@ -30,10 +24,6 @@ var policiesSets = [
   {
     name: '(ArcBox) Enable Azure Monitor for Hybrid VMs with AMA'
     definitionId: '/providers/Microsoft.Authorization/policySetDefinitions/2b00397d-c309-49c4-aa5a-f0b2c5bc6321'
-    flavors: [
-      'Full'
-      'ITPro'
-    ]
     roleDefinition: [
       contributorRoleDefinitionId
       monitoringContributorRoleDefinitionId
