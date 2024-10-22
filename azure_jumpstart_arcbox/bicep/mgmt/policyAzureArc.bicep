@@ -56,7 +56,7 @@ var policiesSets = [
 
 var policies = [
   {
-    name: '(ArcBox) Enable Azure Update Manager on Arc-enabled Windows machines'
+    name: '(ArcBox) Enable Azure Update Manager on hybrid Windows machines'
     definitionId: '/providers/Microsoft.Authorization/policyDefinitions/bfea026e-043f-4ff4-9d1b-bf301ca7ff46'
     roleDefinition: [
       contributorRoleDefinitionId
@@ -68,7 +68,7 @@ var policies = [
     }
   }
   {
-    name: '(ArcBox) Enable Azure Update Manager on Arc-enabled Linux machines'
+    name: '(ArcBox) Enable Azure Update Manager on hybrid Linux machines'
     definitionId: '/providers/Microsoft.Authorization/policyDefinitions/bfea026e-043f-4ff4-9d1b-bf301ca7ff46'
     roleDefinition: [
       contributorRoleDefinitionId

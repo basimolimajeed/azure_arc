@@ -294,8 +294,6 @@ module policyDeployment './mgmt/policyAzureArc.bicep' = {
   name: 'policyDeployment'
   params: {
     azureLocation: location
-    logAnalyticsWorkspaceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
-    flavor: flavor
     resourceTags: resourceTags
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
     vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
