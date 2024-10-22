@@ -290,4 +290,16 @@ module dataCollectionRules 'mgmt/mgmtDataCollectionRules.bicep' = {
   }
 }
 
+module policyDeployment './mgmt/policyAzureArc.bicep' = {
+  name: 'policyDeployment'
+  params: {
+    azureLocation: location
+    logAnalyticsWorkspaceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
+    flavor: flavor
+    resourceTags: resourceTags
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
+  }
+}
+
 output clientVmLogonUserName string = flavor == 'DataOps' ? '${windowsAdminUsername}@${addsDomainName}' : ''
