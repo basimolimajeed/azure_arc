@@ -8,36 +8,13 @@ param resourceTags object = {
 @description('Resource Id of the Data Collection Rule(DCR)')
 param changeTrackingDCR string = ''
 
-@description('Resource Id of the VMInsights solution')
-param vmInsightsDCR string = ''
-
 var connectedMachineResourceAdminRoleDefinitionId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/cd570a14-e51a-42ad-bac8-bafd67325302'
 var monitoringContributorRoleDefinitionId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa'
 var logAnalyticsContributorRoleDefinitionId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/92aaf0da-9dab-42b6-94a3-d43ce8d16293'
-var contributorRoleDefinitionId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
-
-//var sshPostureControlAzurePolicyId = '/providers/Microsoft.Authorization/policyDefinitions/a8f3e6a6-dcd2-434c-b0f7-6f309ce913b4'
 
 param tagsRoleDefinitionId string = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
 
 var policiesSets = [
-  {
-    name: '(ArcBox) Enable Azure Monitor for Hybrid VMs with AMA'
-    definitionId: '/providers/Microsoft.Authorization/policySetDefinitions/2b00397d-c309-49c4-aa5a-f0b2c5bc6321'
-    roleDefinition: [
-      contributorRoleDefinitionId
-      monitoringContributorRoleDefinitionId
-      logAnalyticsContributorRoleDefinitionId
-    ]
-    parameters: {
-      enableProcessesAndDependencies: {
-        value: true
-      }
-      dcrResourceId: {
-        value: vmInsightsDCR
-      }
-    }
-  }
   {
     name: '(ArcBox) Enable ChangeTracking for Arc-enabled machines'
     definitionId: '/providers/Microsoft.Authorization/policySetDefinitions/53448c70-089b-4f52-8f38-89196d7f2de1'
@@ -49,33 +26,6 @@ var policiesSets = [
     parameters: {
       dcrResourceId: {
         value: changeTrackingDCR
-      }
-    }
-  }
-]
-
-var policies = [
-  {
-    name: '(ArcBox) Enable Azure Update Manager on hybrid Windows machines'
-    definitionId: '/providers/Microsoft.Authorization/policyDefinitions/bfea026e-043f-4ff4-9d1b-bf301ca7ff46'
-    roleDefinition: [
-      contributorRoleDefinitionId
-    ]
-    parameters: {
-      osType: {
-        value: 'Windows'
-      }
-    }
-  }
-  {
-    name: '(ArcBox) Enable Azure Update Manager on hybrid Linux machines'
-    definitionId: '/providers/Microsoft.Authorization/policyDefinitions/bfea026e-043f-4ff4-9d1b-bf301ca7ff46'
-    roleDefinition: [
-      contributorRoleDefinitionId
-    ]
-    parameters: {
-      osType: {
-        value: 'Linux'
       }
     }
   }
@@ -94,21 +44,6 @@ resource policySetAssignments 'Microsoft.Authorization/policyAssignments@2021-06
     parameters: policySet.parameters ?? null
   }
 }]
-
-resource policyAssignments 'Microsoft.Authorization/policyAssignments@2021-06-01' = [for (policy, i) in policies: {
-  name: policy.name
-  identity: {
-    type: 'SystemAssigned'
-  }
-  location: azureLocation
-  scope: resourceGroup()
-  properties: {
-    displayName: policy.name
-    policyDefinitionId: any(policy.definitionId)
-    parameters: policy.parameters ?? null
-  }
-}]
-
 
 resource applyCustomTags 'Microsoft.Authorization/policyAssignments@2021-06-01' = [
   for (tag, i) in items(resourceTags): {

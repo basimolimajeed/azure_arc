@@ -17,3 +17,5 @@ param deployBastion = false
 param vmAutologon = true
 
 param resourceTags = {} // Add tags as needed
+
+param emailAddress = ''

@@ -90,6 +90,9 @@ param autoShutdownTime string = '1800' // The time for auto-shutdown in HHmm for
 param autoShutdownTimezone string = 'UTC' // Timezone for the auto-shutdown
 param autoShutdownEmailRecipient string = ''
 
+@description('The email address to send alerts and notifications to.')
+param emailAddress string
+
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 var aksArcDataClusterName = '${namingPrefix}-AKS-Data-${guid}'
 var aksDrArcDataClusterName = '${namingPrefix}-AKS-DR-Data-${guid}'
@@ -296,7 +299,19 @@ module policyDeployment './mgmt/policyAzureArc.bicep' = {
     azureLocation: location
     resourceTags: resourceTags
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
-    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
+  }
+}
+
+module monitoringResources 'mgmt/monitoringResources.bicep' = {
+  name: 'monitoringResources'
+  dependsOn: [
+    dataCollectionRules
+  ]
+  params: {
+    workspaceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
+    workspaceName: logAnalyticsWorkspaceName
+    location: location
+    emailAddress: emailAddress
   }
 }
 
