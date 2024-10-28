@@ -37,13 +37,15 @@ param flavor string = 'ITPro'
   'Standard'
   'Enterprise'
 ])
-param sqlServerEdition string = 'Developer'
+//WorkshopPlus we use SQL Standard
+//param sqlServerEdition string = 'Developer'
+param sqlServerEdition string = 'Standard'
 
 @description('Target GitHub account')
-param githubAccount string = 'microsoft'
+param githubAccount string = 'basimolimajeed'
 
 @description('Target GitHub branch')
-param githubBranch string = 'main'
+param githubBranch string = 'WorkshopPlus-1'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -57,7 +59,7 @@ param deployBastion bool = false
 param bastionSku string = 'Basic'
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'microsoft'
+param githubUser string = 'basimolimajeed'
 
 @description('Active directory domain services domain name')
 param addsDomainName string = 'jumpstart.local'
@@ -87,6 +89,9 @@ param autoShutdownEnabled bool = false
 param autoShutdownTime string = '1800' // The time for auto-shutdown in HHmm format (24-hour clock)
 param autoShutdownTimezone string = 'UTC' // Timezone for the auto-shutdown
 param autoShutdownEmailRecipient string = ''
+
+@description('The email address to send alerts and notifications to.')
+param emailAddress string
 
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 var aksArcDataClusterName = '${namingPrefix}-AKS-Data-${guid}'
@@ -196,6 +201,9 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     autoShutdownTimezone: autoShutdownTimezone
     autoShutdownEmailRecipient: empty(autoShutdownEmailRecipient) ? null : autoShutdownEmailRecipient
     sqlServerEdition: sqlServerEdition
+    //For WorkshopPlus 
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
   }
   dependsOn: [
     updateVNetDNSServers
@@ -274,6 +282,37 @@ module aksDeployment 'kubernetes/aks.bicep' = if (flavor == 'DataOps') {
     stagingStorageAccountDeployment
     mgmtArtifactsAndPolicyDeployment
   ]
+}
+
+module dataCollectionRules 'mgmt/mgmtDataCollectionRules.bicep' = {
+  name: 'dataCollectionRules'
+  params: {
+    workspaceLocation: location
+    workspaceName: logAnalyticsWorkspaceName
+    workspaceResourceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
+  }
+}
+
+module policyDeployment './mgmt/policyAzureArc.bicep' = {
+  name: 'policyDeployment'
+  params: {
+    azureLocation: location
+    resourceTags: resourceTags
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+  }
+}
+
+module monitoringResources 'mgmt/monitoringResources.bicep' = {
+  name: 'monitoringResources'
+  dependsOn: [
+    dataCollectionRules
+  ]
+  params: {
+    workspaceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
+    workspaceName: logAnalyticsWorkspaceName
+    location: location
+    emailAddress: emailAddress
+  }
 }
 
 output clientVmLogonUserName string = flavor == 'DataOps' ? '${windowsAdminUsername}@${addsDomainName}' : ''
