@@ -170,18 +170,18 @@ if ($Env:flavor -ne "DevOps") {
         $vhdImageToDownload = "ArcBox-SQL-ENT.vhdx"
     }
 
-    Write-Host "Fetching SQL VM"
-    $SQLvmName = "$namingPrefix-SQL"
-    $SQLvmvhdPath = "$Env:ArcBoxVMDir\$namingPrefix-SQL.vhdx"
+    # Write-Host "Fetching SQL VM"
+    # $SQLvmName = "$namingPrefix-SQL"
+    # $SQLvmvhdPath = "$Env:ArcBoxVMDir\$namingPrefix-SQL.vhdx"
 
     # Verify if VHD files already downloaded especially when re-running this script
-    if (!(Test-Path $SQLvmvhdPath)) {
-        Write-Output "Downloading nested VMs VHDX file for SQL. This can take some time, hold tight..."
-        azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload" --recursive=true --check-length=false --log-level=ERROR
+    # if (!(Test-Path $SQLvmvhdPath)) {
+    #     Write-Output "Downloading nested VMs VHDX file for SQL. This can take some time, hold tight..."
+    #     azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload" --recursive=true --check-length=false --log-level=ERROR
 
-        # Rename VHD file
-        Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
-    }
+    #     # Rename VHD file
+    #     Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
+    # }
 
     # Create the nested VMs if not already created
     Write-Header "Create Hyper-V VMs"
@@ -415,6 +415,9 @@ if ($Env:flavor -ne "DevOps") {
     if ($Env:flavor -eq "ITPro") {
         Write-Header "Fetching Nested VMs"
 
+        $SQLvmName = "$namingPrefix-SQL"
+        $SQLvmvhdPath = "$Env:ArcBoxVMDir\$namingPrefix-SQL.vhdx"
+        
         $Win2k19vmName = "$namingPrefix-Win2K19"
         $win2k19vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Win2K19.vhdx"
 
@@ -428,12 +431,16 @@ if ($Env:flavor -ne "DevOps") {
         $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-02.vhdx"
 
         # Verify if VHD files already downloaded especially when re-running this script
-        if (!((Test-Path $win2k19vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
+        if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k19vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
             <# Action when all if and elseif conditions are false #>
-            $Env:AZCOPY_BUFFER_GB = 4
+            $Env:AZCOPY_BUFFER_GB = 8
             Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-            azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "ArcBox-Win2K19.vhdx;ArcBox-Win2K22.vhdx;ArcBox-Ubuntu-01.vhdx;ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+            azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload;ArcBox-Win2K19.vhdx;ArcBox-Win2K22.vhdx;ArcBox-Ubuntu-01.vhdx;ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+            # Rename SQL VHD file
+            Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
         }
+
+    
 
         # Create the nested VMs if not already created
         Write-Header "Create Hyper-V VMs"
