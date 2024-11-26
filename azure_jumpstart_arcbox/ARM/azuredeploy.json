@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.30.23.60470",
-      "templateHash": "9704770140298419484"
+      "version": "0.31.92.45157",
+      "templateHash": "4458982336102862103"
     }
   },
   "parameters": {
@@ -23,6 +23,17 @@
         "description": "Your Microsoft Entra tenant Id"
       }
     },
+    "clientVmSku": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_E8s_v5",
+        "Standard_E8s_v4",
+        "Standard_E8s_v3"
+      ],
+      "metadata": {
+        "description": "Client Machine SKU"
+      }
+    },
     "windowsAdminUsername": {
       "type": "string",
       "metadata": {
@@ -37,23 +48,9 @@
         "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
       }
     },
-    "clientVmSku": {
-      "type": "string",
-      "allowedValues": [
-        "Standard_E8s_v5",
-        "Standard_E8s_v4",
-        "Standard_E8s_v3"
-      ],
-      "metadata": {
-        "description": "Client Machine SKU"
-      }
-    },
     "vmAutologon": {
       "type": "bool",
       "defaultValue": true,
-      "allowedValues": [
-        true
-      ],
       "metadata": {
         "description": "Enable automatic logon into ArcBox Virtual Machine"
       }
@@ -104,7 +101,7 @@
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "WorkshopPlus-1",
+      "defaultValue": "ArcBox_3.0.1",
       "metadata": {
         "description": "Target GitHub branch"
       }
@@ -130,7 +127,7 @@
     },
     "githubUser": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "basimolimajeed",
       "metadata": {
         "description": "User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps"
       }
@@ -267,8 +264,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "6876423061153677575"
+              "version": "0.31.92.45157",
+              "templateHash": "6580692552018516132"
             }
           },
           "parameters": {
@@ -590,8 +587,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "11438999795344841602"
+              "version": "0.31.92.45157",
+              "templateHash": "16315959492244704612"
             }
           },
           "parameters": {
@@ -872,8 +869,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "6876423061153677575"
+              "version": "0.31.92.45157",
+              "templateHash": "6580692552018516132"
             }
           },
           "parameters": {
@@ -1195,8 +1192,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "11438999795344841602"
+              "version": "0.31.92.45157",
+              "templateHash": "16315959492244704612"
             }
           },
           "parameters": {
@@ -1537,8 +1534,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "14214558021797921432"
+              "version": "0.31.92.45157",
+              "templateHash": "9826070342679402421"
             }
           },
           "parameters": {
@@ -1549,17 +1546,17 @@
                 "description": "The name of your Virtual Machine"
               }
             },
+            "clientVmSku": {
+              "type": "string",
+              "metadata": {
+                "description": "Client Vm Sku"
+              }
+            },
             "k3sArcDataClusterName": {
               "type": "string",
               "defaultValue": "[format('{0}-K3s-Data', parameters('namingPrefix'))]",
               "metadata": {
                 "description": "The name of the Cluster API workload cluster to be connected as an Azure Arc-enabled Kubernetes cluster"
-              }
-            },
-            "clientVmSku": {
-              "type": "string",
-              "metadata": {
-                "description": "Client Vm Sku"
               }
             },
             "windowsAdminUsername": {
@@ -2092,8 +2089,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "7047616392092695473"
+              "version": "0.31.92.45157",
+              "templateHash": "5558956724028270249"
             }
           },
           "parameters": {
@@ -2193,8 +2190,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "14192713096663670931"
+              "version": "0.31.92.45157",
+              "templateHash": "3848032474508767615"
             }
           },
           "parameters": {
@@ -5296,8 +5293,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "58989000102579517"
+              "version": "0.31.92.45157",
+              "templateHash": "9945696182836656136"
             }
           },
           "parameters": {
@@ -5549,8 +5546,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "14192713096663670931"
+              "version": "0.31.92.45157",
+              "templateHash": "3848032474508767615"
             }
           },
           "parameters": {
@@ -8650,8 +8647,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "1299318489016792608"
+              "version": "0.31.92.45157",
+              "templateHash": "2497418514609263316"
             }
           },
           "parameters": {
@@ -8940,8 +8937,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "16729304523736137038"
+              "version": "0.31.92.45157",
+              "templateHash": "13596761878021830664"
             }
           },
           "parameters": {
@@ -9359,8 +9356,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "9879286259874353042"
+              "version": "0.31.92.45157",
+              "templateHash": "16468325615180434251"
             }
           },
           "parameters": {
@@ -9509,8 +9506,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "8439283899680804375"
+              "version": "0.31.92.45157",
+              "templateHash": "6368314623230307859"
             }
           },
           "parameters": {
