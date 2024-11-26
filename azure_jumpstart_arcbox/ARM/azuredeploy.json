@@ -5,17 +5,10 @@
     "_generator": {
       "name": "bicep",
       "version": "0.31.92.45157",
-      "templateHash": "4458982336102862103"
+      "templateHash": "12949872532486607004"
     }
   },
   "parameters": {
-    "sshRSAPublicKey": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "RSA public key used for securing SSH access to ArcBox resources. This parameter is only needed when deploying the DataOps or DevOps flavors."
-      }
-    },
     "tenantId": {
       "type": "string",
       "defaultValue": "[tenant().tenantId]",
@@ -48,13 +41,6 @@
         "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
       }
     },
-    "vmAutologon": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Enable automatic logon into ArcBox Virtual Machine"
-      }
-    },
     "rdpPort": {
       "type": "string",
       "defaultValue": "3389",
@@ -68,40 +54,16 @@
         "description": "Name for your log analytics workspace"
       }
     },
-    "flavor": {
-      "type": "string",
-      "defaultValue": "ITPro",
-      "allowedValues": [
-        "ITPro",
-        "DevOps",
-        "DataOps"
-      ],
-      "metadata": {
-        "description": "The flavor of ArcBox you want to deploy. Valid values are: 'Full', 'ITPro', 'DevOps', 'DataOps'"
-      }
-    },
-    "sqlServerEdition": {
-      "type": "string",
-      "defaultValue": "Standard",
-      "allowedValues": [
-        "Developer",
-        "Standard",
-        "Enterprise"
-      ],
-      "metadata": {
-        "description": "SQL Server edition to deploy. Valid values are: 'Developer', 'Standard', 'Enterprise'"
-      }
-    },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "basimolimajeed",
+      "defaultValue": "Azure",
       "metadata": {
         "description": "Target GitHub account"
       }
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "ArcBox_3.0.1",
+      "defaultValue": "main",
       "metadata": {
         "description": "Target GitHub branch"
       }
@@ -125,46 +87,11 @@
         "description": "Bastion host Sku name. The Developer SKU is currently supported in a limited number of regions: https://learn.microsoft.com/azure/bastion/quickstart-developer-sku"
       }
     },
-    "githubUser": {
-      "type": "string",
-      "defaultValue": "basimolimajeed",
-      "metadata": {
-        "description": "User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps"
-      }
-    },
-    "addsDomainName": {
-      "type": "string",
-      "defaultValue": "jumpstart.local",
-      "metadata": {
-        "description": "Active directory domain services domain name"
-      }
-    },
-    "guid": {
-      "type": "string",
-      "defaultValue": "[substring(newGuid(), 0, 4)]",
-      "metadata": {
-        "description": "Random GUID for cluster names"
-      }
-    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Azure location to deploy all resources"
-      }
-    },
-    "customLocationRPOID": {
-      "type": "string",
-      "defaultValue": "[newGuid()]",
-      "metadata": {
-        "description": "The custom location RPO ID. This parameter is only needed when deploying the DataOps flavor."
-      }
-    },
-    "debugEnabled": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Use this parameter to enable or disable debug mode for the automation scripts on the client VM, effectively configuring PowerShell ErrorActionPreference to Break. Intended for use when troubleshooting automation scripts. Default is false."
       }
     },
     "resourceTags": {
@@ -208,16 +135,25 @@
     }
   },
   "variables": {
+    "sshRSAPublicKey": "",
+    "vmAutologon": true,
+    "flavor": "ITPro",
+    "sqlServerEdition": "Standard",
+    "githubUser": "",
+    "addsDomainName": "jumpstart.local",
+    "guid": "1234",
+    "customLocationRPOID": "1234",
+    "debugEnabled": false,
     "templateBaseUrl": "[format('https://raw.githubusercontent.com/{0}/azure_arc/{1}/azure_jumpstart_arcbox/', parameters('githubAccount'), parameters('githubBranch'))]",
-    "aksArcDataClusterName": "[format('{0}-AKS-Data-{1}', parameters('namingPrefix'), parameters('guid'))]",
-    "aksDrArcDataClusterName": "[format('{0}-AKS-DR-Data-{1}', parameters('namingPrefix'), parameters('guid'))]",
-    "k3sArcDataClusterName": "[format('{0}-K3s-Data-{1}', parameters('namingPrefix'), parameters('guid'))]",
-    "k3sArcClusterName": "[format('{0}-K3s-{1}', parameters('namingPrefix'), parameters('guid'))]",
+    "aksArcDataClusterName": "[format('{0}-AKS-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
+    "aksDrArcDataClusterName": "[format('{0}-AKS-DR-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
+    "k3sArcDataClusterName": "[format('{0}-K3s-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
+    "k3sArcClusterName": "[format('{0}-K3s-{1}', parameters('namingPrefix'), variables('guid'))]",
     "k3sClusterNodesCount": 3
   },
   "resources": [
     {
-      "condition": "[or(equals(parameters('flavor'), 'DevOps'), equals(parameters('flavor'), 'DataOps'))]",
+      "condition": "[or(equals(variables('flavor'), 'DevOps'), equals(variables('flavor'), 'DataOps'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "ubuntuRancherK3sDataSvcDeployment",
@@ -228,7 +164,7 @@
         "mode": "Incremental",
         "parameters": {
           "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+            "value": "[variables('sshRSAPublicKey')]"
           },
           "stagingStorageAccountName": {
             "value": "[toLower(reference(resourceId('Microsoft.Resources/deployments', 'stagingStorageAccountDeployment'), '2022-09-01').outputs.storageAccountName.value)]"
@@ -252,7 +188,7 @@
             "value": "[toLower(variables('k3sArcDataClusterName'))]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "namingPrefix": {
             "value": "[parameters('namingPrefix')]"
@@ -540,7 +476,7 @@
         "name": "ubuntuRancherK3sDataSvcNodesDeployment",
         "count": "[length(range(0, variables('k3sClusterNodesCount')))]"
       },
-      "condition": "[or(equals(parameters('flavor'), 'DataOps'), equals(parameters('flavor'), 'DevOps'))]",
+      "condition": "[or(equals(variables('flavor'), 'DataOps'), equals(variables('flavor'), 'DevOps'))]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('ubuntuRancherK3sDataSvcNodesDeployment-{0}', range(0, variables('k3sClusterNodesCount'))[copyIndex()])]",
@@ -551,7 +487,7 @@
         "mode": "Incremental",
         "parameters": {
           "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+            "value": "[variables('sshRSAPublicKey')]"
           },
           "stagingStorageAccountName": {
             "value": "[toLower(reference(resourceId('Microsoft.Resources/deployments', 'stagingStorageAccountDeployment'), '2022-09-01').outputs.storageAccountName.value)]"
@@ -569,7 +505,7 @@
             "value": "[parameters('location')]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "vmName": {
             "value": "[format('{0}-Node-0{1}', variables('k3sArcDataClusterName'), range(0, variables('k3sClusterNodesCount'))[copyIndex()])]"
@@ -822,7 +758,7 @@
       ]
     },
     {
-      "condition": "[equals(parameters('flavor'), 'DevOps')]",
+      "condition": "[equals(variables('flavor'), 'DevOps')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "ubuntuRancherK3sDeployment",
@@ -833,7 +769,7 @@
         "mode": "Incremental",
         "parameters": {
           "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+            "value": "[variables('sshRSAPublicKey')]"
           },
           "stagingStorageAccountName": {
             "value": "[toLower(reference(resourceId('Microsoft.Resources/deployments', 'stagingStorageAccountDeployment'), '2022-09-01').outputs.storageAccountName.value)]"
@@ -857,7 +793,7 @@
             "value": "[toLower(variables('k3sArcClusterName'))]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "namingPrefix": {
             "value": "[parameters('namingPrefix')]"
@@ -1145,7 +1081,7 @@
         "name": "ubuntuRancherK3sNodesDeployment",
         "count": "[length(range(0, variables('k3sClusterNodesCount')))]"
       },
-      "condition": "[equals(parameters('flavor'), 'DevOps')]",
+      "condition": "[equals(variables('flavor'), 'DevOps')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "[format('ubuntuRancherK3sNodesDeployment-{0}', range(0, variables('k3sClusterNodesCount'))[copyIndex()])]",
@@ -1156,7 +1092,7 @@
         "mode": "Incremental",
         "parameters": {
           "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+            "value": "[variables('sshRSAPublicKey')]"
           },
           "stagingStorageAccountName": {
             "value": "[toLower(reference(resourceId('Microsoft.Resources/deployments', 'stagingStorageAccountDeployment'), '2022-09-01').outputs.storageAccountName.value)]"
@@ -1174,7 +1110,7 @@
             "value": "[parameters('location')]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "vmName": {
             "value": "[format('{0}-Node-0{1}', variables('k3sArcClusterName'), range(0, variables('k3sClusterNodesCount'))[copyIndex()])]"
@@ -1458,7 +1394,7 @@
             "value": "[variables('templateBaseUrl')]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "subnetId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'mgmtArtifactsAndPolicyDeployment'), '2022-09-01').outputs.subnetId.value]"
@@ -1470,7 +1406,7 @@
             "value": "[parameters('githubBranch')]"
           },
           "githubUser": {
-            "value": "[parameters('githubUser')]"
+            "value": "[variables('githubUser')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -1488,22 +1424,22 @@
             "value": "[variables('aksDrArcDataClusterName')]"
           },
           "vmAutologon": {
-            "value": "[parameters('vmAutologon')]"
+            "value": "[variables('vmAutologon')]"
           },
           "rdpPort": {
             "value": "[parameters('rdpPort')]"
           },
           "addsDomainName": {
-            "value": "[parameters('addsDomainName')]"
+            "value": "[variables('addsDomainName')]"
           },
           "customLocationRPOID": {
-            "value": "[parameters('customLocationRPOID')]"
+            "value": "[variables('customLocationRPOID')]"
           },
           "namingPrefix": {
             "value": "[parameters('namingPrefix')]"
           },
           "debugEnabled": {
-            "value": "[parameters('debugEnabled')]"
+            "value": "[variables('debugEnabled')]"
           },
           "autoShutdownEnabled": {
             "value": "[parameters('autoShutdownEnabled')]"
@@ -1516,7 +1452,7 @@
           },
           "autoShutdownEmailRecipient": "[if(empty(parameters('autoShutdownEmailRecipient')), createObject('value', null()), createObject('value', parameters('autoShutdownEmailRecipient')))]",
           "sqlServerEdition": {
-            "value": "[parameters('sqlServerEdition')]"
+            "value": "[variables('sqlServerEdition')]"
           },
           "changeTrackingDCR": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'dataCollectionRules'), '2022-09-01').outputs.changeTrackingDCR.value]"
@@ -2166,7 +2102,7 @@
             "value": "[parameters('logAnalyticsWorkspaceName')]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "deployBastion": {
             "value": "[parameters('deployBastion')]"
@@ -5255,7 +5191,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('flavor'), 'DataOps')]",
+      "condition": "[equals(variables('flavor'), 'DataOps')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "addsVmDeployment",
@@ -5272,7 +5208,7 @@
             "value": "[parameters('windowsAdminPassword')]"
           },
           "addsDomainName": {
-            "value": "[parameters('addsDomainName')]"
+            "value": "[variables('addsDomainName')]"
           },
           "deployBastion": {
             "value": "[parameters('deployBastion')]"
@@ -5508,7 +5444,7 @@
       ]
     },
     {
-      "condition": "[equals(parameters('flavor'), 'DataOps')]",
+      "condition": "[equals(variables('flavor'), 'DataOps')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "updateVNetDNSServers",
@@ -5522,7 +5458,7 @@
             "value": "[parameters('logAnalyticsWorkspaceName')]"
           },
           "flavor": {
-            "value": "[parameters('flavor')]"
+            "value": "[variables('flavor')]"
           },
           "deployBastion": {
             "value": "[parameters('deployBastion')]"
@@ -8615,7 +8551,7 @@
       ]
     },
     {
-      "condition": "[equals(parameters('flavor'), 'DataOps')]",
+      "condition": "[equals(variables('flavor'), 'DataOps')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "aksDeployment",
@@ -8626,7 +8562,7 @@
         "mode": "Incremental",
         "parameters": {
           "sshRSAPublicKey": {
-            "value": "[parameters('sshRSAPublicKey')]"
+            "value": "[variables('sshRSAPublicKey')]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -13088,7 +13024,7 @@
   "outputs": {
     "clientVmLogonUserName": {
       "type": "string",
-      "value": "[if(equals(parameters('flavor'), 'DataOps'), format('{0}@{1}', parameters('windowsAdminUsername'), parameters('addsDomainName')), '')]"
+      "value": "[if(equals(variables('flavor'), 'DataOps'), format('{0}@{1}', parameters('windowsAdminUsername'), variables('addsDomainName')), '')]"
     }
   }
 }

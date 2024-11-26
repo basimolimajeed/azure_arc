@@ -30,13 +30,13 @@ properties:
       settings:
         id: Microsoft.PowerShell
         source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: kubectl
-      directives:
-        description: Install kubectl
-      settings:
-        id: Kubernetes.kubectl
-        source: winget
+    # - resource: Microsoft.WinGet.DSC/WinGetPackage
+    #   id: kubectl
+    #   directives:
+    #     description: Install kubectl
+    #   settings:
+    #     id: Kubernetes.kubectl
+    #     source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: edge
       directives:
@@ -58,13 +58,13 @@ properties:
       settings:
         id: Microsoft.DotNet.SDK.8
         source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: helm
-      directives:
-        description: Install Helm
-      settings:
-        id: Helm.Helm
-        source: winget
+    # - resource: Microsoft.WinGet.DSC/WinGetPackage
+    #   id: helm
+    #   directives:
+    #     description: Install Helm
+    #   settings:
+    #     id: Helm.Helm
+    #     source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.Sysinternals.BGInfo
       directives:

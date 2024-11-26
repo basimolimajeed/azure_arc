@@ -440,8 +440,6 @@ if ($Env:flavor -ne "DevOps") {
             Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
         }
 
-    
-
         # Create the nested VMs if not already created
         Write-Header "Create Hyper-V VMs"
         $serversDscConfigurationFile = "$Env:ArcBoxDscDir\virtual_machines_itpro.dsc.yml"

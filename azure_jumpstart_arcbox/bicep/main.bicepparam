@@ -1,19 +1,23 @@
 using 'main.bicep'
 
-param sshRSAPublicKey = '<your RSA public key>'
+//param sshRSAPublicKey = ''
 
-param tenantId = '<your tenant id>'
+param tenantId = '<Enter tenant ID here>'
 
-param windowsAdminUsername = 'arcdemo'
+param windowsAdminUsername = '<Enter username here>'
 
-param windowsAdminPassword = '<your windows admin password>'
+param windowsAdminPassword = '<Enter password here>'
 
-param logAnalyticsWorkspaceName = '<your unique Log Analytics workspace name>'
+param logAnalyticsWorkspaceName = '<Enter Log Analytics workspace name here>'
 
-param flavor = 'ITPro'
+//param flavor = 'ITPro'
 
 param deployBastion = false
 
-param vmAutologon = true
+//param vmAutologon = true
 
 param resourceTags = {} // Add tags as needed
+
+param clientVmSku = 'Standard_E8s_v3'
+
+param emailAddress = ''

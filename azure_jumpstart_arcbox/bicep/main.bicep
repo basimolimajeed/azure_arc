@@ -1,6 +1,8 @@
-@description('RSA public key used for securing SSH access to ArcBox resources. This parameter is only needed when deploying the DataOps or DevOps flavors.')
-@secure()
-param sshRSAPublicKey string = ''
+//Workshop plus not needed replace with variable
+// @description('RSA public key used for securing SSH access to ArcBox resources. This parameter is only needed when deploying the DataOps or DevOps flavors.')
+// @secure()
+// param sshRSAPublicKey string = ''
+var sshRSAPublicKey = ''
 
 @description('Your Microsoft Entra tenant Id')
 param tenantId string = tenant().tenantId
@@ -23,8 +25,10 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
-@description('Enable automatic logon into ArcBox Virtual Machine')
-param vmAutologon bool = true
+//Workshop plus not needed, always auto logon, replace with variable
+// @description('Enable automatic logon into ArcBox Virtual Machine')
+// param vmAutologon bool = true
+var vmAutologon = true
 
 @description('Override default RDP port using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
@@ -32,29 +36,31 @@ param rdpPort string = '3389'
 @description('Name for your log analytics workspace')
 param logAnalyticsWorkspaceName string
 
-@description('The flavor of ArcBox you want to deploy. Valid values are: \'Full\', \'ITPro\', \'DevOps\', \'DataOps\'')
-@allowed([
-  'ITPro'
-  'DevOps'
-  'DataOps'
-])
-param flavor string = 'ITPro'
+//Workshop plus only ITPRO, replace with variable
+// @description('The flavor of ArcBox you want to deploy. Valid values are: \'Full\', \'ITPro\', \'DevOps\', \'DataOps\'')
+// @allowed([
+//   'ITPro'
+//   'DevOps'
+//   'DataOps'
+// ])
+// param flavor string = 'ITPro'
+var flavor = 'ITPro'
 
-@description('SQL Server edition to deploy. Valid values are: \'Developer\', \'Standard\', \'Enterprise\'')
-@allowed([
-  'Developer'
-  'Standard'
-  'Enterprise'
-])
+// @description('SQL Server edition to deploy. Valid values are: \'Developer\', \'Standard\', \'Enterprise\'')
+// @allowed([
+//   'Developer'
+//   'Standard'
+//   'Enterprise'
+// ])
 //WorkshopPlus we use SQL Standard
 //param sqlServerEdition string = 'Developer'
-param sqlServerEdition string = 'Standard'
+var sqlServerEdition = 'Standard'
 
 @description('Target GitHub account')
-param githubAccount string = 'basimolimajeed'
+param githubAccount string = 'Azure'
 
 @description('Target GitHub branch')
-param githubBranch string = 'ArcBox_3.0.1'
+param githubBranch string = 'main'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -67,23 +73,33 @@ param deployBastion bool = false
 ])
 param bastionSku string = 'Basic'
 
-@description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'basimolimajeed'
+//Workshop plus not needed replace with variable
+// @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
+// param githubUser string = ''
+var githubUser = ''
 
-@description('Active directory domain services domain name')
-param addsDomainName string = 'jumpstart.local'
+//Workshop plus not needed replace with variable
+// @description('Active directory domain services domain name')
+// param addsDomainName string = 'jumpstart.local'
+var addsDomainName = 'jumpstart.local'
 
-@description('Random GUID for cluster names')
-param guid string = substring(newGuid(),0,4)
+//Workshop plus not needed replace with fake guid
+// @description('Random GUID for cluster names')
+// param guid string = substring(newGuid(),0,4)
+var guid ='1234'
 
 @description('Azure location to deploy all resources')
 param location string = resourceGroup().location
 
-@description('The custom location RPO ID. This parameter is only needed when deploying the DataOps flavor.')
-param customLocationRPOID string = newGuid()
+//Workshop plus not needed replace with variable
+// @description('The custom location RPO ID. This parameter is only needed when deploying the DataOps flavor.')
+// param customLocationRPOID string = newGuid()
+var customLocationRPOID = '1234'
 
-@description('Use this parameter to enable or disable debug mode for the automation scripts on the client VM, effectively configuring PowerShell ErrorActionPreference to Break. Intended for use when troubleshooting automation scripts. Default is false.')
-param debugEnabled bool = false
+//Workshop plus not needed replace with variable
+// @description('Use this parameter to enable or disable debug mode for the automation scripts on the client VM, effectively configuring PowerShell ErrorActionPreference to Break. Intended for use when troubleshooting automation scripts. Default is false.')
+// param debugEnabled bool = false
+var debugEnabled = false
 
 @description('Tags to assign for all ArcBox resources')
 param resourceTags object = {
@@ -103,6 +119,7 @@ param autoShutdownEmailRecipient string = ''
 param emailAddress string
 
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
+//Workshop plus not needed
 var aksArcDataClusterName = '${namingPrefix}-AKS-Data-${guid}'
 var aksDrArcDataClusterName = '${namingPrefix}-AKS-DR-Data-${guid}'
 var k3sArcDataClusterName = '${namingPrefix}-K3s-Data-${guid}'
