@@ -76,7 +76,7 @@ param bastionSku string = 'Basic'
 //Workshop plus not needed replace with variable
 // @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
 // param githubUser string = ''
-var githubUser = ''
+var githubUser = 'microsoft'
 
 //Workshop plus not needed replace with variable
 // @description('Active directory domain services domain name')
@@ -110,10 +110,15 @@ param resourceTags object = {
 @description('The naming prefix for the nested virtual machines and all Azure resources deployed. The maximum length for the naming prefix is 7 characters,example: `ArcBox-Win2k19`')
 param namingPrefix string = 'ArcBox'
 
-param autoShutdownEnabled bool = false
-param autoShutdownTime string = '1800' // The time for auto-shutdown in HHmm format (24-hour clock)
-param autoShutdownTimezone string = 'UTC' // Timezone for the auto-shutdown
-param autoShutdownEmailRecipient string = ''
+//Workshop plus not needed replace with variable
+// param autoShutdownEnabled bool = false
+// param autoShutdownTime string = '1800' // The time for auto-shutdown in HHmm format (24-hour clock)
+// param autoShutdownTimezone string = 'UTC' // Timezone for the auto-shutdown
+// param autoShutdownEmailRecipient string = ''
+var autoShutdownEnabled = false
+var autoShutdownTime = '1800'
+var autoShutdownTimezone = 'UTC'
+var autoShutdownEmailRecipient = ''
 
 @description('The email address to send alerts and notifications to.')
 param emailAddress string

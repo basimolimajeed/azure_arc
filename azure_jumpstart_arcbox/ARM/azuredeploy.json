@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.31.92.45157",
-      "templateHash": "12949872532486607004"
+      "templateHash": "1590621754106529109"
     }
   },
   "parameters": {
@@ -111,22 +111,6 @@
         "description": "The naming prefix for the nested virtual machines and all Azure resources deployed. The maximum length for the naming prefix is 7 characters,example: `ArcBox-Win2k19`"
       }
     },
-    "autoShutdownEnabled": {
-      "type": "bool",
-      "defaultValue": false
-    },
-    "autoShutdownTime": {
-      "type": "string",
-      "defaultValue": "1800"
-    },
-    "autoShutdownTimezone": {
-      "type": "string",
-      "defaultValue": "UTC"
-    },
-    "autoShutdownEmailRecipient": {
-      "type": "string",
-      "defaultValue": ""
-    },
     "emailAddress": {
       "type": "string",
       "metadata": {
@@ -139,11 +123,15 @@
     "vmAutologon": true,
     "flavor": "ITPro",
     "sqlServerEdition": "Standard",
-    "githubUser": "",
+    "githubUser": "microsoft",
     "addsDomainName": "jumpstart.local",
     "guid": "1234",
     "customLocationRPOID": "1234",
     "debugEnabled": false,
+    "autoShutdownEnabled": false,
+    "autoShutdownTime": "1800",
+    "autoShutdownTimezone": "UTC",
+    "autoShutdownEmailRecipient": "",
     "templateBaseUrl": "[format('https://raw.githubusercontent.com/{0}/azure_arc/{1}/azure_jumpstart_arcbox/', parameters('githubAccount'), parameters('githubBranch'))]",
     "aksArcDataClusterName": "[format('{0}-AKS-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
     "aksDrArcDataClusterName": "[format('{0}-AKS-DR-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
@@ -1442,15 +1430,15 @@
             "value": "[variables('debugEnabled')]"
           },
           "autoShutdownEnabled": {
-            "value": "[parameters('autoShutdownEnabled')]"
+            "value": "[variables('autoShutdownEnabled')]"
           },
           "autoShutdownTime": {
-            "value": "[parameters('autoShutdownTime')]"
+            "value": "[variables('autoShutdownTime')]"
           },
           "autoShutdownTimezone": {
-            "value": "[parameters('autoShutdownTimezone')]"
+            "value": "[variables('autoShutdownTimezone')]"
           },
-          "autoShutdownEmailRecipient": "[if(empty(parameters('autoShutdownEmailRecipient')), createObject('value', null()), createObject('value', parameters('autoShutdownEmailRecipient')))]",
+          "autoShutdownEmailRecipient": "[if(empty(variables('autoShutdownEmailRecipient')), createObject('value', null()), createObject('value', variables('autoShutdownEmailRecipient')))]",
           "sqlServerEdition": {
             "value": "[variables('sqlServerEdition')]"
           },
