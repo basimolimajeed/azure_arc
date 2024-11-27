@@ -106,9 +106,11 @@ param resourceTags object = {
   Solution: 'jumpstart_arcbox'
 }
 
-@maxLength(7)
-@description('The naming prefix for the nested virtual machines and all Azure resources deployed. The maximum length for the naming prefix is 7 characters,example: `ArcBox-Win2k19`')
-param namingPrefix string = 'ArcBox'
+//Workshop Plus fix this to ArcBox to match lab description. as Variable
+// @maxLength(7)
+// @description('The naming prefix for the nested virtual machines and all Azure resources deployed. The maximum length for the naming prefix is 7 characters,example: `ArcBox-Win2k19`')
+// param namingPrefix string = 'ArcBox'
+var namingPrefix = 'ArcBox'
 
 //Workshop plus not needed replace with variable
 // param autoShutdownEnabled bool = false

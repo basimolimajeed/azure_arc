@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.31.92.45157",
-      "templateHash": "1590621754106529109"
+      "templateHash": "16167878463039581288"
     }
   },
   "parameters": {
@@ -103,14 +103,6 @@
         "description": "Tags to assign for all ArcBox resources"
       }
     },
-    "namingPrefix": {
-      "type": "string",
-      "defaultValue": "ArcBox",
-      "maxLength": 7,
-      "metadata": {
-        "description": "The naming prefix for the nested virtual machines and all Azure resources deployed. The maximum length for the naming prefix is 7 characters,example: `ArcBox-Win2k19`"
-      }
-    },
     "emailAddress": {
       "type": "string",
       "metadata": {
@@ -128,15 +120,16 @@
     "guid": "1234",
     "customLocationRPOID": "1234",
     "debugEnabled": false,
+    "namingPrefix": "ArcBox",
     "autoShutdownEnabled": false,
     "autoShutdownTime": "1800",
     "autoShutdownTimezone": "UTC",
     "autoShutdownEmailRecipient": "",
     "templateBaseUrl": "[format('https://raw.githubusercontent.com/{0}/azure_arc/{1}/azure_jumpstart_arcbox/', parameters('githubAccount'), parameters('githubBranch'))]",
-    "aksArcDataClusterName": "[format('{0}-AKS-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
-    "aksDrArcDataClusterName": "[format('{0}-AKS-DR-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
-    "k3sArcDataClusterName": "[format('{0}-K3s-Data-{1}', parameters('namingPrefix'), variables('guid'))]",
-    "k3sArcClusterName": "[format('{0}-K3s-{1}', parameters('namingPrefix'), variables('guid'))]",
+    "aksArcDataClusterName": "[format('{0}-AKS-Data-{1}', variables('namingPrefix'), variables('guid'))]",
+    "aksDrArcDataClusterName": "[format('{0}-AKS-DR-Data-{1}', variables('namingPrefix'), variables('guid'))]",
+    "k3sArcDataClusterName": "[format('{0}-K3s-Data-{1}', variables('namingPrefix'), variables('guid'))]",
+    "k3sArcClusterName": "[format('{0}-K3s-{1}', variables('namingPrefix'), variables('guid'))]",
     "k3sClusterNodesCount": 3
   },
   "resources": [
@@ -179,7 +172,7 @@
             "value": "[variables('flavor')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -502,7 +495,7 @@
             "value": "[toLower(variables('k3sArcDataClusterName'))]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -784,7 +777,7 @@
             "value": "[variables('flavor')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -1107,7 +1100,7 @@
             "value": "[toLower(variables('k3sArcClusterName'))]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -1424,7 +1417,7 @@
             "value": "[variables('customLocationRPOID')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           },
           "debugEnabled": {
             "value": "[variables('debugEnabled')]"
@@ -2004,7 +1997,7 @@
             "value": "[parameters('location')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -2105,7 +2098,7 @@
             "value": "[parameters('resourceTags')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -5208,7 +5201,7 @@
             "value": "[parameters('location')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -5461,7 +5454,7 @@
             ]
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
@@ -8562,7 +8555,7 @@
             "value": "[variables('aksDrArcDataClusterName')]"
           },
           "namingPrefix": {
-            "value": "[parameters('namingPrefix')]"
+            "value": "[variables('namingPrefix')]"
           }
         },
         "template": {
